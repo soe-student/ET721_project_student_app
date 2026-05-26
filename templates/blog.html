@@ -1,0 +1,101 @@
+{% extends "base.html" %} {% block title %}Blog{% endblock %} {% block content
+%}
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>✍️ Student Blog</h1>
+      <p>Ideas, tips, and stories from the community.</p>
+    </div>
+  </div>
+
+  <!-- Add Post Form -->
+  {% if session.get('user_id') %}
+  <div class="card mb-3">
+    <h3 style="color: var(--text); margin-bottom: 1rem">Write a New Post</h3>
+    <form method="POST" action="{{ url_for('add_post') }}">
+      <div class="form-group">
+        <label>Title</label>
+        <input
+          name="title"
+          class="form-control"
+          placeholder="Post title"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label>Content</label>
+        <textarea
+          name="content"
+          class="form-control"
+          rows="4"
+          placeholder="Write your post..."
+          required
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select name="category" class="form-control">
+          <option>General</option>
+          <option>Study Tips</option>
+          <option>Projects</option>
+          <option>Experience</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Publish Post</button>
+    </form>
+  </div>
+  {% endif %}
+
+  <!-- Posts List -->
+  {% if posts %}
+  <div class="card-grid card-grid-2">
+    {% for post in posts %}
+    <div class="card post-card">
+      <div class="post-meta">
+        <span>✍️ {{ post['username'] }}</span>
+        <span>{{ post['created_at'] }}</span>
+        <span class="badge badge-purple">{{ post['category'] }}</span>
+      </div>
+      <h3>{{ post['title'] }}</h3>
+      <p class="post-excerpt">
+        {{ post['content'][:200] }}{% if post['content']|length > 200 %}…{%
+        endif %}
+      </p>
+      <div class="post-footer">
+        {% if session.get('user_id') == post['user_id'] %}
+        <form
+          method="POST"
+          action="{{ url_for('delete_post', post_id=post['id']) }}"
+          style="margin: 0"
+        >
+          <button type="submit" class="btn btn-danger btn-sm">🗑 Delete</button>
+        </form>
+        {% endif %}
+
+        <!-- Comment form -->
+        <form
+          method="POST"
+          action="{{ url_for('add_comment', post_id=post['id']) }}"
+          style="margin: 0; display: flex; gap: 0.5rem; flex: 1"
+        >
+          <input
+            name="content"
+            class="form-control"
+            placeholder="Add a comment..."
+            required
+            style="font-size: 0.85rem"
+          />
+          <button type="submit" class="btn btn-secondary btn-sm">💬</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="emoji">✍️</div>
+    <p>No posts yet. Be the first to write one!</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

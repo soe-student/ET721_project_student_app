@@ -1,11 +1,72 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}Student LMS{% endblock %} — QCC Student Manager
+    </title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% if session.get('user_id') %}
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div class="sidebar-brand">Edu<span>Hub</span></div>
+        <nav class="sidebar-nav">
+          <a href="{{ url_for('dashboard') }}" class="nav-item">
+            <span class="nav-icon">🏠</span> Dashboard
+          </a>
+          <a href="{{ url_for('tasks') }}" class="nav-item">
+            <span class="nav-icon">📋</span> Tasks
+          </a>
+          <a href="{{ url_for('blog') }}" class="nav-item">
+            <span class="nav-icon">✍️</span> Blog
+          </a>
+          <a href="{{ url_for('notes') }}" class="nav-item">
+            <span class="nav-icon">📎</span> Notes
+          </a>
+        </nav>
+        <a href="{{ url_for('logout') }}" class="nav-item logout">
+          <span class="nav-icon">🚪</span> Log Out
+        </a>
+      </aside>
+      <div class="main-area">
+        <div class="flash-wrap">
+          {% with messages = get_flashed_messages(with_categories=true) %} {%
+          for cat, msg in messages %}
+          <div class="flash {{ cat }}">{{ msg }}</div>
+          {% endfor %} {% endwith %}
+        </div>
+        <main>{% block content %}{% endblock %}</main>
+      </div>
+    </div>
+
+    {% else %}
+    <nav class="topnav">
+      <a href="{{ url_for('index') }}" class="nav-brand">Edu<span>Hub</span></a>
+      <div class="topnav-links">
+        <a href="{{ url_for('index') }}">Log In</a>
+        <a href="{{ url_for('signup') }}" class="btn-green">Sign Up</a>
+      </div>
+    </nav>
+    <div
+      class="flash-wrap"
+      style="max-width: 500px; margin: 0.75rem auto 0; padding: 0 1.5rem"
+    >
+      {% with messages = get_flashed_messages(with_categories=true) %} {% for
+      cat, msg in messages %}
+      <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %} {% endwith %}
+    </div>
+    <main>{{ self.content() }}</main>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
 </html>

@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block title %}New Post{% endblock %} {% block
+content %}
+<div class="container" style="max-width: 720px">
+  <div class="page-header">
+    <div>
+      <h1>✍️ New Blog Post</h1>
+      <p>Share your thoughts, tips, or project highlights.</p>
+    </div>
+    <a href="{{ url_for('blog') }}" class="btn btn-secondary">← Back</a>
+  </div>
+  <div class="card">
+    <form method="POST">
+      <div class="form-group">
+        <label>Title</label>
+        <input
+          name="title"
+          class="form-control"
+          placeholder="Give your post a great title…"
+          required
+        />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <select name="category" class="form-control">
+            <option>General</option>
+            <option>Study Tips</option>
+            <option>Projects</option>
+            <option>Tutorials</option>
+            <option>Reflections</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex: 2">
+          <label
+            >Tags
+            <span style="color: var(--muted); font-weight: 400"
+              >(comma-separated, optional)</span
+            ></label
+          >
+          <input
+            name="tags"
+            class="form-control"
+            placeholder="python, web, databases"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Content</label>
+        <textarea
+          name="content"
+          class="form-control"
+          placeholder="Write your post here…"
+          rows="12"
+          required
+        ></textarea>
+      </div>
+      <div style="display: flex; gap: 0.75rem">
+        <button type="submit" class="btn btn-primary">Publish Post</button>
+        <a href="{{ url_for('blog') }}" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

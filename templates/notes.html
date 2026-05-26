@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% block title %}My Notes{% endblock %} {% block
+content %}
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>📎 My Notes</h1>
+      <p>Upload images or PDFs of your handwritten and digital notes.</p>
+    </div>
+  </div>
+
+  <!-- Upload Form -->
+  <div class="card mb-3">
+    <h3 style="color: var(--text); margin-bottom: 1rem">Upload a Note</h3>
+    <form
+      method="POST"
+      action="{{ url_for('upload_note') }}"
+      enctype="multipart/form-data"
+    >
+      <div class="form-group">
+        <label>Subject / Topic</label>
+        <input
+          name="subject"
+          class="form-control"
+          placeholder="e.g. Data Structures"
+          value="General"
+        />
+      </div>
+      <div class="form-group">
+        <label>Choose File</label>
+        <input
+          type="file"
+          name="file"
+          class="form-control"
+          accept=".png,.jpg,.jpeg,.gif,.pdf"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Upload Note</button>
+    </form>
+  </div>
+
+  <!-- Notes Grid -->
+  {% if notes %}
+  <div class="notes-grid">
+    {% for note in notes %}
+    <div class="note-card">
+      <div class="note-preview">
+        {% if note['filename'].lower().split('.')[-1] in
+        ['png','jpg','jpeg','gif'] %}
+        <img
+          src="{{ url_for('static', filename='uploads/' + note['filename']) }}"
+          alt="{{ note['filename'] }}"
+        />
+        {% else %}
+        <div class="file-icon">📄</div>
+        {% endif %}
+      </div>
+      <div class="note-info">
+        <h4 title="{{ note['filename'] }}">{{ note['filename'] }}</h4>
+        <p style="font-size: 0.8rem; margin-top: 0.15rem">
+          <span class="badge badge-blue">{{ note['subject'] }}</span>
+          <span style="display: block; margin-top: 0.35rem"
+            >{{ note['uploaded_at'] }}</span
+          >
+        </p>
+      </div>
+      <div class="note-actions">
+        <a
+          href="{{ url_for('download_note', filename=note['filename']) }}"
+          class="btn btn-secondary btn-sm"
+          >⬇ Download</a
+        >
+        <a
+          href="{{ url_for('delete_note', note_id=note['id']) }}"
+          class="btn btn-danger btn-sm"
+          >🗑</a
+        >
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="emoji">📎</div>
+    <p>No notes uploaded yet. Upload your first one above!</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

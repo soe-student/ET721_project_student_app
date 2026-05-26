@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block title %}About{% endblock %} {% block content
+%}
+<div class="container" style="max-width: 760px">
+  <div class="page-header">
+    <h1>About EduHub</h1>
+  </div>
+  <div class="card">
+    <p style="font-size: 1.05rem; color: var(--text); line-height: 1.8">
+      EduHub is a Student Learning Management App built for the ET721 course
+      project. It provides students with a unified platform to manage academic
+      tasks, share ideas, and organise study notes — all in one secure, personal
+      space.
+    </p>
+    <hr class="divider" />
+    <h3 style="color: var(--text)">Features</h3>
+    <div class="card-grid card-grid-2 mt-2" style="margin-top: 1rem">
+      <div>
+        <strong style="color: var(--accent)">🔐 Secure Login</strong>
+        <p>Session-based auth with hashed passwords (Werkzeug).</p>
+      </div>
+      <div>
+        <strong style="color: var(--accent)">📋 Task Manager</strong>
+        <p>Create, categorise, complete, and delete tasks.</p>
+      </div>
+      <div>
+        <strong style="color: var(--accent)">✍️ Blog</strong>
+        <p>Publish posts, like, and comment on others' writing.</p>
+      </div>
+      <div>
+        <strong style="color: var(--accent)">📎 Notes</strong>
+        <p>Upload images/PDFs, organised by subject with preview.</p>
+      </div>
+    </div>
+    <hr class="divider" />
+    <p style="font-size: 0.9rem">
+      <strong style="color: var(--text)">Tech Stack:</strong> Python · Flask ·
+      SQLite · Flask-SQLAlchemy · Flask-Login · HTML/CSS · JavaScript
+    </p>
+  </div>
+</div>
+{% endblock %}
